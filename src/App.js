@@ -1,25 +1,39 @@
 import logo from './logo.svg';
 import './App.css';
+import {BrowserRouter as Router, Route, Routes, Outlet, Navigate} from 'react-router-dom'
+import { checkCookie } from "./utils/login";
+
+
+import SignIn from './pages/SignIn';
+import EX from './pages/EX';
 
 function App() {
+
+  const ProtectedRoute = ({
+    redirectPath = '/',
+    children,
+  }) => {
+    if (checkCookie()) {
+      return <Navigate to={redirectPath} replace />;
+    }
+  
+    return children ? children : <Outlet />;
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Router basename='/'>
+      <Routes>
+          <Route path="/" element={<SignIn />} />
+
+          <Route element={<ProtectedRoute />}>
+            <Route path="/ex" element={ <EX />}/>
+          </Route>
+
+          <Route path="*" element={<Navigate to='/' replace />} />
+        </Routes>
+    </Router>
+    
+  )
 }
 
 export default App;
