@@ -5,9 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode'
 import { resetCookie } from '../utils/login';
 
-const clientId =  process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID
 
 const SignIn = () => {
+    const clientId = process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID
     const navigate = useNavigate();
     const [loginFailure, setLoginFailure] = useState(false)
   
