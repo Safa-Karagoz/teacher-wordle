@@ -5,6 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode'
 import { resetCookie } from '../utils/login';
 
+import Typewriter from 'typewriter-effect';
+import "../css/SignIn.css"
+
 
 const SignIn = () => {
     const clientId = process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID
@@ -28,6 +31,12 @@ const SignIn = () => {
 
   return (
     <div> 
+     <Typewriter className="title"
+      options={{
+        strings: ['Teacherle'],
+        autoStart: true,
+        loop: true,
+     }}/>
         <div className="login-button">
             <GoogleOAuthProvider clientId={clientId}>
                 <GoogleLogin
