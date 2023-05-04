@@ -30,13 +30,25 @@ const SignIn = () => {
       }
 
   return (
-    <div> 
-     <Typewriter className="title"
-      options={{
-        strings: ['Teacherle'],
-        autoStart: true,
-        loop: true,
-     }}/>
+    <div className='container'> 
+      <div className="title">
+        <Typewriter onInit={(typewriter) => { 
+                  typewriter
+                  .typeString("Teacherle")
+                  .start()
+
+                }}
+        />
+      </div>
+      <div className='subtitle'>
+        <Typewriter onInit={(typewriter) => { 
+                  typewriter
+                  .typeString("BCA Teacher Wordle")
+                  .start()
+                }}
+        />
+      </div>
+      
         <div className="login-button">
             <GoogleOAuthProvider clientId={clientId}>
                 <GoogleLogin
@@ -52,6 +64,11 @@ const SignIn = () => {
                     cookiePolicy="single_host_origin" />
             </GoogleOAuthProvider>
         </div>
+
+        {loginFailure ? 
+        <p className='failure-message'><br/>*Please login use your bergen.org email*</p> 
+      : null}
+      
     </div>
     
   )

@@ -1,3 +1,33 @@
+.container {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #FFDEE3;
+    box-sizing: border-box;
+    overflow: hidden;
+
+}
+
 .title {
-    
+    font-family: 'Balsamiq Sans', sans-serif;
+    font-size: 10vw;
+    padding-top: 2vh;
+    /* color: #FF3334 */
+}
+
+.subtitle {
+    font-family: 'Balsamiq Sans', sans-serif;
+    font-size: 3vw;
+    padding: 1vh;
+    /* color: #FF3334 */
+}
+
+
+.failure-message {
+    color: red;
+    margin: 0 auto;
+    font-family: 'Balsamiq Sans';
 }
