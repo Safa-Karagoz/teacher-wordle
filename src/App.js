@@ -6,6 +6,7 @@ import { checkCookie } from "./utils/login";
 
 import SignIn from './pages/SignIn';
 import EX from './pages/EX';
+import Game from './pages/Game';
 
 function App() {
 
@@ -27,6 +28,7 @@ function App() {
 
           <Route element={<ProtectedRoute />}>
             <Route path="/ex" element={ <EX />}/>
+            <Route path="/game" element={ <Game />}/>
           </Route>
 
           <Route path="*" element={<Navigate to='/' replace />} />
