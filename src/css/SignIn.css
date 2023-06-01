@@ -1,3 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;500&display=swap');
+
+html, body{min-height: 100%};
+body{height:100vh;}
+
 .container {
     text-align: center;
     display: flex;
@@ -5,29 +10,50 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #FFDEE3;
+    width: 100vw;
+    /* background-color: #FFDEE3; */
+    margin: 0 auto;
+    padding: 0;
     box-sizing: border-box;
     overflow: hidden;
 
+    background-color: #e3e3e1;
 }
+
+
 
 .title {
-    font-family: 'Balsamiq Sans', sans-serif;
+    font-family: 'Roboto Slab', serif ;
+    font-weight: 400;
     font-size: 10vw;
     padding-top: 2vh;
-    /* color: #FF3334 */
 }
-
 .subtitle {
-    font-family: 'Balsamiq Sans', sans-serif;
+    font-family: 'Roboto Slab', serif;
     font-size: 3vw;
     padding: 1vh;
-    /* color: #FF3334 */
 }
 
 
+
+.login-button {
+    margin-top: 3vh;
+    margin-bottom: 3vh;
+
+}
 .failure-message {
     color: red;
     margin: 0 auto;
-    font-family: 'Balsamiq Sans';
+    /* font-family: 'Balsamiq Sans'; */
+}
+
+
+
+.bottom-text {
+    font-family: 'Roboto Slab', serif ;
+    font-weight: 400;
+    font-size: 1em;
+}
+.date{ 
+    font-weight: 500;
 }
