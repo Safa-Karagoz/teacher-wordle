@@ -1,4 +1,4 @@
-.numberInputs {
+#numberInputs {
     display:flex;
     justify-content: center;
 }
@@ -6,5 +6,9 @@
 .col {
     display:flex;
     justify-content: center;
+}
+
+#subject-box {
+    width: fit-content!important;
 }
 

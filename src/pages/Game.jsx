@@ -11,21 +11,45 @@ import InputGroup from 'react-bootstrap/InputGroup';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import "../css/Game.css"
+import teachers from "../assets/teacherValues.json"
+
+var teacher = teachers[0];
+
 
 function changeInput(subject) {
   document.getElementById("subject-box").value = subject;
 }
 
-function submitGuess() {
+// function chooseTeacher() {
+//   teacher = teachers[Math.floor(Math.random() * teachers.length)].name
+// }
 
+function submitGuess(guesstype, guess) {
+  if(guesstype === "subject") {
+    if(teacher.subject === guess) {
+      console.log("GETS HERE");
+      document.getElementById("subject-box").style.background = "green";
+      document.getElementById("dropdown-button").disabled = true;
+    }
+  }
+  else if(guesstype === "room") {
+    console.log(teacher.roomNumber === Number(guess));
+  }
+}
+
+function getRoomNumber() {
+  let roomNumbers = document.getElementsByClassName("roomNumberInt");
+  let room = roomNumbers[0].value + roomNumbers[1].value + roomNumbers[2].value
+  return room;
 }
 
 const Game = () => {
+  console.log(teacher);
   return (
     <Container fluid>
       <Row>
         <Col>
-          <Form  className="numberInputs">
+          <Form  id="numberInputs">
             <Form.Group>
               <Form.Control type="number" className="roomNumberInt" min="0" max="2"/>
             </Form.Group>
@@ -35,22 +59,28 @@ const Game = () => {
             <Form.Group>
               <Form.Control type="number" className="roomNumberInt" min="0" max="9" />
             </Form.Group>
-            <Button type="submit" onSubmit= {() => submitGuess()}>Submit</Button>
+            <Button onClick= {() => submitGuess("room", getRoomNumber())}>Submit</Button>
           </Form>
         </Col>
-        <Col>
-          <InputGroup className="mb-3">
-            <DropdownButton
-              variant="outline-secondary"
-              id="subjects-dropdown">
-              <Dropdown.Item href="#" onClick= {()=>changeInput("Math")}>Math</Dropdown.Item>
-              <Dropdown.Item href="#" onClick= {()=>changeInput("Guidance")}>Guidance</Dropdown.Item>
-              <Dropdown.Item href="#" onClick= {()=>changeInput("History")}>History</Dropdown.Item>
-              <Dropdown.Item href="#" onClick= {()=>changeInput("World Language")}>World Language</Dropdown.Item>
-              <Dropdown.Item href="#" onClick= {()=>changeInput("Guidance")}>Guidance</Dropdown.Item>
-            </DropdownButton>
-            <Form.Control id="subject-box" disabled/>
-          </InputGroup>
+        <Col id="subjects-dropdown">
+          <Form>
+            <InputGroup className="mb-3">
+              <DropdownButton
+                variant="outline-secondary"
+                id = "dropdown-button"
+                >
+                <Dropdown.Item href="#" onClick= {()=>changeInput("Math")}>Math</Dropdown.Item>
+                <Dropdown.Item href="#" onClick= {()=>changeInput("Guidance")}>Guidance</Dropdown.Item>
+                <Dropdown.Item href="#" onClick= {()=>changeInput("History")}>History</Dropdown.Item>
+                <Dropdown.Item href="#" onClick= {()=>changeInput("World Language")}>World Language</Dropdown.Item>
+                <Dropdown.Item href="#" onClick= {()=>changeInput("Guidance")}>Guidance</Dropdown.Item>
+              </DropdownButton>
+              <Form.Control id="subject-box" disabled/>
+              
+              <Button onClick= {() => submitGuess("subject", document.getElementById("subject-box").value)}>Submit</Button>
+              
+            </InputGroup>
+          </Form>
         </Col>
 
       </Row>

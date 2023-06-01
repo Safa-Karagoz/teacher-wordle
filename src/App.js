@@ -28,9 +28,9 @@ function App() {
 
           <Route element={<ProtectedRoute />}>
             <Route path="/ex" element={ <EX />}/>
-            <Route path="/game" element={ <Game />}/>
-          </Route>
 
+          </Route>
+          <Route path="/game" element={ <Game />}/>
           <Route path="*" element={<Navigate to='/' replace />} />
         </Routes>
     </Router>
