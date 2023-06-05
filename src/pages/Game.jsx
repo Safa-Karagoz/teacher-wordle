@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
+import FormGroup from "react-bootstrap/FormGroup"
 
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
@@ -11,30 +12,44 @@ import InputGroup from 'react-bootstrap/InputGroup';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import "../css/Game.css"
-import teachers from "../assets/teacherValues.json"
+import * as scripts from "../utils/scripts"
 
-var teacher = teachers[0];
+var teacher = scripts.getTodaysTeacher();
 
 
 function changeInput(subject) {
   document.getElementById("subject-box").value = subject;
 }
 
-// function chooseTeacher() {
-//   teacher = teachers[Math.floor(Math.random() * teachers.length)].name
-// }
 
 function submitGuess(guesstype, guess) {
   if(guesstype === "subject") {
     if(teacher.subject === guess) {
-      console.log("GETS HERE");
       document.getElementById("subject-box").style.background = "green";
       document.getElementById("dropdown-button").disabled = true;
     }
   }
   else if(guesstype === "room") {
-    console.log(teacher.roomNumber === Number(guess));
+    var guessDigits = guess.split("");
+    var realDigits = teacher.roomNumber.toString().split(""); 
+    var box = document.getElementsByClassName("roomNumberInt")
+    for (var i = 0; i < 3; i ++){
+      if (guessDigits[i] === realDigits[i]){ 
+        box[i].style.background = "green"; 
+        box[i].disabled = true
+      }
+    }
   }
+  else if (guesstype === "teacher") {
+    let name = teacher.name.toLowerCase().split(" ")
+    if (guess.toLowerCase() === name[1]){
+      console.log("got it")
+      document.getElementById("teacherGuess").disabled = true; 
+      document.getElementById("teacherGuess").style.background = "green"; 
+
+    }
+  }
+
 }
 
 function getRoomNumber() {
@@ -48,6 +63,11 @@ const Game = () => {
   return (
     <Container fluid>
       <Row>
+      <Form.Group>
+        <Form.Control type="text" className="teacherGuess" id='teacherGuess' />
+        <Button onClick= {() => submitGuess("teacher", document.getElementById("teacherGuess").value)}>Guess!</Button>
+      </Form.Group>
+      
         <Col>
           <Form  id="numberInputs">
             <Form.Group>

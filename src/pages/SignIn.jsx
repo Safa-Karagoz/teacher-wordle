@@ -80,7 +80,7 @@ const SignIn = () => {
       <div className='bottom-text'>
         <div className='date'>{scripts.getTodaysDate()}</div>
         <div> Day No.{scripts.getDayNumber()}</div>
-        <p>Built by Safa and Matt</p>
+        <p>Built by Safa Karagoz and Matthew Lerman</p>
       </div>
 
     </div>

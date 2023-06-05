@@ -7,13 +7,14 @@ export function submitTeacherGuess() {
 export function getTodaysTeacher() { 
     var today = new Date(); 
     var value  = (1 + today.getMonth()) * 100 + today.getDate()
+    var x = {}; 
     json.forEach( (teacher) => {
         if (teacher.id === value){
-            return teacher.name;
+            x = teacher;
         }
     })
     
-    return "Scott Lang";
+    return x;
 }
 
 export function getDayNumber(){ 
