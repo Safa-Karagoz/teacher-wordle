@@ -4,7 +4,6 @@ import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
-import FormGroup from "react-bootstrap/FormGroup"
 
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
@@ -24,26 +23,45 @@ function changeInput(subject) {
 
 function submitGuess(guesstype, guess) {
   if(guesstype === "subject") {
-    if(teacher.subject === guess) {
+    if(guess === "") {
+
+    }
+    else if(teacher.subject === guess) {
       document.getElementById("subject-box").style.background = "green";
       document.getElementById("dropdown-button").disabled = true;
+    }
+    else {
+      document.getElementById(guess).outerHTML = "";
+      document.getElementById("subject-box").value = "";
     }
   }
   else if(guesstype === "room") {
     var guessDigits = guess.split("");
     var realDigits = teacher.roomNumber.toString().split(""); 
     var box = document.getElementsByClassName("roomNumberInt")
-    for (var i = 0; i < 3; i ++){
+    for (let i = 0; i < 3; i ++){
       if (guessDigits[i] === realDigits[i]){ 
         box[i].style.background = "green"; 
         box[i].disabled = true
+        realDigits[i] = "claimedGreen";
       }
     }
+    for(let i = 0; i < 3; i++) {
+      if((box[i].style.background !== "green")) {
+        if (realDigits.includes(guessDigits[i])) {
+          box[i].style.background = "yellow"; 
+          realDigits[realDigits.indexOf(guessDigits[i])] = "claimedYellow";
+        } 
+        else  {
+          box[i].style.background = "white"; 
+        }
+      }
+    }
+      
   }
   else if (guesstype === "teacher") {
     let name = teacher.name.toLowerCase().split(" ")
     if (guess.toLowerCase() === name[1]){
-      console.log("got it")
       document.getElementById("teacherGuess").disabled = true; 
       document.getElementById("teacherGuess").style.background = "green"; 
 
@@ -89,11 +107,10 @@ const Game = () => {
                 variant="outline-secondary"
                 id = "dropdown-button"
                 >
-                <Dropdown.Item href="#" onClick= {()=>changeInput("Math")}>Math</Dropdown.Item>
-                <Dropdown.Item href="#" onClick= {()=>changeInput("Guidance")}>Guidance</Dropdown.Item>
-                <Dropdown.Item href="#" onClick= {()=>changeInput("History")}>History</Dropdown.Item>
-                <Dropdown.Item href="#" onClick= {()=>changeInput("World Language")}>World Language</Dropdown.Item>
-                <Dropdown.Item href="#" onClick= {()=>changeInput("Guidance")}>Guidance</Dropdown.Item>
+                <Dropdown.Item href="#" id="Math" onClick= {()=>changeInput("Math")}>Math</Dropdown.Item>
+                <Dropdown.Item href="#" id="Guidance" onClick= {()=>changeInput("Guidance")}>Guidance</Dropdown.Item>
+                <Dropdown.Item href="#" id="History" onClick= {()=>changeInput("History")}>History</Dropdown.Item>
+                <Dropdown.Item href="#" id="World Language" onClick= {()=>changeInput("World Language")}>World Language</Dropdown.Item>
               </DropdownButton>
               <Form.Control id="subject-box" disabled/>
               
