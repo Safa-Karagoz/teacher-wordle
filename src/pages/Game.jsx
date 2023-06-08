@@ -1,10 +1,9 @@
-import React from 'react'
+import React, {useState} from 'react'
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
-import FormGroup from "react-bootstrap/FormGroup"
 
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
@@ -14,7 +13,14 @@ import 'bootstrap/dist/css/bootstrap.css';
 import "../css/Game.css"
 import * as scripts from "../utils/scripts"
 
+
 var teacher = scripts.getTodaysTeacher();
+let doc = {
+  roomCounter: 0, 
+  subjectCounter: 0, 
+  teacherCounter: 0, 
+  dayNum: scripts.getDayNumber()
+}
 
 
 function changeInput(subject) {
@@ -23,6 +29,7 @@ function changeInput(subject) {
 
 
 function submitGuess(guesstype, guess) {
+  scripts.saveToCookie(guesstype, doc)
   if(guesstype === "subject") {
     if(teacher.subject === guess) {
       document.getElementById("subject-box").style.background = "green";
@@ -41,6 +48,7 @@ function submitGuess(guesstype, guess) {
     }
   }
   else if (guesstype === "teacher") {
+    
     let name = teacher.name.toLowerCase().split(" ")
     if (guess.toLowerCase() === name[1]){
       console.log("got it")
@@ -49,7 +57,6 @@ function submitGuess(guesstype, guess) {
 
     }
   }
-
 }
 
 function getRoomNumber() {
@@ -60,6 +67,11 @@ function getRoomNumber() {
 
 const Game = () => {
   console.log(teacher);
+
+  const [roomCounter, addRoomCounter] = useState(0)
+  const [subjectCounter, addSubjectCounter] = useState(0)
+  const [teacherCounter, addTeacherCounter] = useState(0)
+
   return (
     <Container fluid>
       <Row>
