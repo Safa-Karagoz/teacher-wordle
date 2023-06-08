@@ -30,3 +30,25 @@ export function getTodaysDate() {
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     return monthNames[today.getMonth()] + " " + today.getDate() + ", " + today.getFullYear(); 
 }
+
+
+export function saveToCookie(guess, doc) {
+   
+
+    switch(guess) {
+        case "room": 
+            doc.roomCounter++; 
+            break;  
+        case "subject": 
+            doc.subjectCounter++; 
+            break;
+        case "teacher": 
+            doc.teacherCounter++; 
+            break; 
+        default: 
+            break; 
+    }
+    console.log(JSON.stringify(doc))
+    document.cookie = "wordleStorage;value=" + JSON.stringify(doc); 
+
+}
