@@ -84,34 +84,49 @@ const Game = () => {
     }
     else if (guesstype === "room") {
       scripts.saveToCookie(guesstype, doc)
-      addRoomCounter(roomCounter + 1)
+      
       var guessDigits = guess.split("");
       var realDigits = teacher.roomNumber.toString().split("");
       var box = document.getElementsByClassName("roomNumberInt")
       var green = 0;
-      for (let i = 0; i < 3; i++) {
-        if (guessDigits[i] === realDigits[i]) {
-          green++;
-          box[i].style.background = "green";
-          box[i].disabled = true;
-          realDigits[i] = "claimedGreen";
-        }
-        if (green === 3) {
-          addGreenCounter(3);
-        }
-
-      }
-      for (let i = 0; i < 3; i++) {
-        if ((box[i].style.background !== "green")) {
-          if (realDigits.includes(guessDigits[i])) {
-            box[i].style.background = "yellow";
-            realDigits[realDigits.indexOf(guessDigits[i])] = "claimedYellow";
-          }
-          else {
-            box[i].style.background = "white";
-          }
+      var emptyDigit= false;
+      console.log(guessDigits)
+      for(let i = 0; i < 3; i++) {
+        if(guessDigits[i] === "") {
+          emptyDigit = true;
         }
       }
+      if(guessDigits.length < 3) {
+        emptyDigit = true;
+      }
+      console.log(guessDigits);
+      if(!emptyDigit) {
+        addRoomCounter(roomCounter + 1)
+        for (let i = 0; i < 3; i++) {
+          if (guessDigits[i] === realDigits[i]) {
+            green++;
+            box[i].style.background = "green";
+            box[i].disabled = true;
+            realDigits[i] = "claimedGreen";
+          }
+          if (green === 3) {
+            addGreenCounter(3);
+          }
+  
+        }
+        for (let i = 0; i < 3; i++) {
+          if ((box[i].style.background !== "green")) {
+            if (realDigits.includes(guessDigits[i])) {
+              box[i].style.background = "yellow";
+              realDigits[realDigits.indexOf(guessDigits[i])] = "claimedYellow";
+            }
+            else {
+              box[i].style.background = "white";
+            }
+          }
+        }
+      }
+      
 
     }
     else if (guesstype === "teacher") {
