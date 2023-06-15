@@ -1,7 +1,12 @@
 import json from "../assets/teacherValues.json"
 
-export function submitTeacherGuess() {
-   
+export function getTeacherNames() {
+    var names = []; 
+    json.forEach(teacher => {
+        var x = teacher.name.toLowerCase().split(" ")
+        names.push(x[1])
+    })
+    return names
 }
 
 export function getTodaysTeacher() { 

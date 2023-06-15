@@ -12,7 +12,6 @@ import InputGroup from 'react-bootstrap/InputGroup';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import "../css/Game.css"
-import json from "../assets/teacherValues.json"
 import * as scripts from "../utils/scripts"
 import { ModalTitle } from 'react-bootstrap';
 
@@ -26,13 +25,13 @@ let doc = {
 }
 
 const Game = () => {
-  //console.log(teacher);
 
   const [roomCounter, addRoomCounter] = useState(0)
   const [subjectCounter, addSubjectCounter] = useState(0)
   const [teacherCounter, addTeacherCounter] = useState(0)
   const [greenCount, addGreenCounter] = useState(0)
   const [win, setWin] = useState(false);
+  let teacherNames = scripts.getTeacherNames();
 
 
   useEffect(() => {
@@ -135,15 +134,21 @@ const Game = () => {
 
     }
     else if (guesstype === "teacher") {
-      scripts.saveToCookie(guesstype, doc)
-      addTeacherCounter(teacherCounter + 1);
       let name = teacher.name.toLowerCase().split(" ")
-      if (guess.toLowerCase() === name[1]) {
-        document.getElementById("teacherGuess").disabled = true;
-        document.getElementById("teacher-submit").disabled = true;
-        document.getElementById("teacherGuess").style.background = "green";
-        setWin(true);
+      if (!teacherNames.includes(guess.toLowerCase())) {
+        alert("that aint no teacher")
       }
+      else {
+        addTeacherCounter(teacherCounter + 1);
+        scripts.saveToCookie(guesstype, doc)
+        if (guess.toLowerCase() === name[1]) {
+          document.getElementById("teacherGuess").disabled = true;
+          document.getElementById("teacher-submit").disabled = true;
+          document.getElementById("teacherGuess").style.background = "green";
+          setWin(true);
+        }
+      }
+
     }
   }
 
@@ -157,6 +162,10 @@ const Game = () => {
   return (
     <div>
       <Container fluid>
+
+        <Row style={{boxShadow: "1px 1px 1px gray"}}>
+          <p className='title'>Teacherle</p>
+        </Row>
 
         <Row>
           <p className='teacher-p'>Who's the teacher? <span className='count-p'>{teacherCounter}/5</span></p>
@@ -226,14 +235,14 @@ const Game = () => {
       </Container>
 
       <ReactModal
-        style={{overlay: {zIndex: 10}} }
+        style={{ overlay: { zIndex: 10 } }}
         isOpen={win}
         contentLabel="Win Modal">
         <Button className="exit-button" onClick={() => setWin(false)}>X</Button>
-        <ModalTitle style={{textAlign: 'center'}}>Congrats</ModalTitle>
-        <p className='modal-text'>You guessed the teacher in <span style={{fontWeight:'bold'}}>{teacherCounter}</span> {teacherCounter===1 ? ("guess") : "guesses"}</p>
-        <p className='modal-text'>You used <span style={{fontWeight:'bold'}}>{roomCounter}</span> room number {roomCounter===1 ? ("guess") : "guesses"}</p>
-        <p className='modal-text'>You used <span style={{fontWeight:'bold'}}>{subjectCounter}</span> subject {subjectCounter===1 ? ("guess") : "guesses"}</p>
+        <ModalTitle style={{ textAlign: 'center' }}>Congratualtions</ModalTitle>
+        <p className='modal-text'>You guessed the teacher in <span style={{ fontWeight: 'bold' }}>{teacherCounter}</span> {teacherCounter === 1 ? ("guess") : "guesses"}</p>
+        <p className='modal-text'>You used <span style={{ fontWeight: 'bold' }}>{roomCounter}</span> room number {roomCounter === 1 ? ("guess") : "guesses"}</p>
+        <p className='modal-text'>You used <span style={{ fontWeight: 'bold' }}>{subjectCounter}</span> subject {subjectCounter === 1 ? ("guess") : "guesses"}</p>
       </ReactModal>
 
     </div>
