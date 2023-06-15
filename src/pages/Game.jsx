@@ -98,8 +98,9 @@ const Game = () => {
       }
       if(guessDigits.length < 3) {
         emptyDigit = true;
+        alert("please fill out all boxes")
       }
-      console.log(guessDigits);
+
       if(!emptyDigit) {
         addRoomCounter(roomCounter + 1)
         for (let i = 0; i < 3; i++) {
@@ -153,7 +154,7 @@ const Game = () => {
     <Container fluid>
 
       <Row>
-        <p>Who's the teacher? <span>{teacherCounter}/5</span></p>
+        <p className='teacher-p'>Who's the teacher? <span className='count-p'>{teacherCounter}/5</span></p>
         <Form.Group>
           <Row>
             <Form.Control type="text" className="teacherGuess" id='teacherGuess' />
@@ -162,8 +163,10 @@ const Game = () => {
         </Form.Group>
       </Row>
   
+      <br></br>
+
         <Col>
-            <p>What's their room number? <span>{roomCounter}/5</span></p>
+            <p className='room-p'>What's their room number? <span className='count-p'>{roomCounter}/5</span></p>
         </Col>
 
         <Col>
@@ -183,8 +186,10 @@ const Game = () => {
           </Row>
         </Col>
 
+        <br></br>
+
         <Col>
-            <p>What subject do they teach? <span>{subjectCounter}/5</span></p>
+            <p className='subject-p'>What subject do they teach? <span className='count-p'>{subjectCounter}/5</span></p>
         </Col>
 
         <Col id="subjects-dropdown">
@@ -194,15 +199,16 @@ const Game = () => {
                 variant="outline-secondary"
                 id="dropdown-button"
               >
-                <Dropdown.Item href="#" id="Math" onClick={() => changeInput("Math")}>Math</Dropdown.Item>
                 <Dropdown.Item href="#" id="Guidance" onClick={() => changeInput("Guidance")}>Guidance</Dropdown.Item>
+                <Dropdown.Item href="#" id="Math" onClick={() => changeInput("Math")}>Math</Dropdown.Item>
+                <Dropdown.Item href="#" id="English" onClick={() => changeInput("English")}>English</Dropdown.Item>
                 <Dropdown.Item href="#" id="History" onClick={() => changeInput("History")}>History</Dropdown.Item>
                 <Dropdown.Item href="#" id="World Language" onClick={() => changeInput("World Language")}>World Language</Dropdown.Item>
-                <Dropdown.Item href="#" onClick={() => changeInput("Math")}>Math</Dropdown.Item>
-                <Dropdown.Item href="#" onClick={() => changeInput("Guidance")}>Guidance</Dropdown.Item>
-                <Dropdown.Item href="#" onClick={() => changeInput("History")}>History</Dropdown.Item>
-                <Dropdown.Item href="#" onClick={() => changeInput("World Language")}>World Language</Dropdown.Item>
-                <Dropdown.Item href="#" onClick={() => changeInput("Guidance")}>Guidance</Dropdown.Item>
+                <Dropdown.Item href="#" id="Physics" onClick={() => changeInput("Physics")}>Physics</Dropdown.Item>
+                <Dropdown.Item href="#" id="Chemistry" onClick={() => changeInput("Chemistry")}>Chemistry</Dropdown.Item>
+                <Dropdown.Item href="#" id="Biology" onClick={() => changeInput("Biology")}>Physics</Dropdown.Item>
+                <Dropdown.Item href="#" id="Academy Study" onClick={() => changeInput("Academy Study")}>Academy Study</Dropdown.Item>
+                <Dropdown.Item href="#" id="PE" onClick={() => changeInput("PE")}>PE</Dropdown.Item>
               </DropdownButton>
               <Form.Control id="subject-box" disabled />
 

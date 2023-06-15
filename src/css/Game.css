@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;500&display=swap');
+
 #numberInputs {
     display:flex;
     justify-content: center;
@@ -12,3 +14,27 @@
     width: fit-content!important;
 }
 
+.teacher-p {
+    margin-top: 2vh;
+    margin-bottom: 1vh;
+    font-family: 'Roboto Slab', serif;
+    font-size: 3vw;
+}
+
+.room-p {
+    margin-top: 2vh;
+    margin-bottom: 1vh;
+    font-family: 'Roboto Slab', serif;
+    font-size: 1rem;
+}
+
+.subject-p {
+    margin-top: 2vh;
+    margin-bottom: 1vh;
+    font-family: 'Roboto Slab', serif;
+    font-size: 1rem;
+}
+
+.count-p {
+    color: gray;
+}
