@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
+import ReactModal from 'react-modal';
 
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
@@ -11,7 +12,9 @@ import InputGroup from 'react-bootstrap/InputGroup';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import "../css/Game.css"
+import json from "../assets/teacherValues.json"
 import * as scripts from "../utils/scripts"
+import { ModalTitle } from 'react-bootstrap';
 
 
 var teacher = scripts.getTodaysTeacher();
@@ -29,6 +32,7 @@ const Game = () => {
   const [subjectCounter, addSubjectCounter] = useState(0)
   const [teacherCounter, addTeacherCounter] = useState(0)
   const [greenCount, addGreenCounter] = useState(0)
+  const [win, setWin] = useState(false);
 
 
   useEffect(() => {
@@ -63,7 +67,7 @@ const Game = () => {
 
 
   function submitGuess(guesstype, guess) {
-    if (guess === ""){
+    if (guess === "") {
       alert("please give input")
     }
     else if (guesstype === "subject") {
@@ -84,24 +88,24 @@ const Game = () => {
     }
     else if (guesstype === "room") {
       scripts.saveToCookie(guesstype, doc)
-      
+
       var guessDigits = guess.split("");
       var realDigits = teacher.roomNumber.toString().split("");
       var box = document.getElementsByClassName("roomNumberInt")
       var green = 0;
-      var emptyDigit= false;
+      var emptyDigit = false;
       console.log(guessDigits)
-      for(let i = 0; i < 3; i++) {
-        if(guessDigits[i] === "") {
+      for (let i = 0; i < 3; i++) {
+        if (guessDigits[i] === "") {
           emptyDigit = true;
         }
       }
-      if(guessDigits.length < 3) {
+      if (guessDigits.length < 3) {
         emptyDigit = true;
         alert("please fill out all boxes")
       }
 
-      if(!emptyDigit) {
+      if (!emptyDigit) {
         addRoomCounter(roomCounter + 1)
         for (let i = 0; i < 3; i++) {
           if (guessDigits[i] === realDigits[i]) {
@@ -113,7 +117,7 @@ const Game = () => {
           if (green === 3) {
             addGreenCounter(3);
           }
-  
+
         }
         for (let i = 0; i < 3; i++) {
           if ((box[i].style.background !== "green")) {
@@ -127,7 +131,7 @@ const Game = () => {
           }
         }
       }
-      
+
 
     }
     else if (guesstype === "teacher") {
@@ -138,7 +142,7 @@ const Game = () => {
         document.getElementById("teacherGuess").disabled = true;
         document.getElementById("teacher-submit").disabled = true;
         document.getElementById("teacherGuess").style.background = "green";
-
+        setWin(true);
       }
     }
   }
@@ -151,22 +155,23 @@ const Game = () => {
 
 
   return (
-    <Container fluid>
+    <div>
+      <Container fluid>
 
-      <Row>
-        <p className='teacher-p'>Who's the teacher? <span className='count-p'>{teacherCounter}/5</span></p>
-        <Form.Group>
-          <Row>
-            <Form.Control type="text" className="teacherGuess" id='teacherGuess' />
-            <Button id="teacher-submit" onClick={() => submitGuess("teacher", document.getElementById("teacherGuess").value)}>Guess!</Button>
-          </Row>
-        </Form.Group>
-      </Row>
-  
-      <br></br>
+        <Row>
+          <p className='teacher-p'>Who's the teacher? <span className='count-p'>{teacherCounter}/5</span></p>
+          <Form.Group>
+            <Row>
+              <Form.Control type="text" className="teacherGuess" id='teacherGuess' />
+              <Button id="teacher-submit" onClick={() => submitGuess("teacher", document.getElementById("teacherGuess").value)}>Guess!</Button>
+            </Row>
+          </Form.Group>
+        </Row>
+
+        <br></br>
 
         <Col>
-            <p className='room-p'>What's their room number? <span className='count-p'>{roomCounter}/5</span></p>
+          <p className='room-p'>What's their room number? <span className='count-p'>{roomCounter}/5</span></p>
         </Col>
 
         <Col>
@@ -189,7 +194,7 @@ const Game = () => {
         <br></br>
 
         <Col>
-            <p className='subject-p'>What subject do they teach? <span className='count-p'>{subjectCounter}/5</span></p>
+          <p className='subject-p'>What subject do they teach? <span className='count-p'>{subjectCounter}/5</span></p>
         </Col>
 
         <Col id="subjects-dropdown">
@@ -217,7 +222,21 @@ const Game = () => {
           </Form>
         </Col>
 
-    </Container>
+        {/* Pop up when user guesses teacher correctly */}
+      </Container>
+
+      <ReactModal
+        style={{overlay: {zIndex: 10}} }
+        isOpen={win}
+        contentLabel="Win Modal">
+        <Button className="exit-button" onClick={() => setWin(false)}>X</Button>
+        <ModalTitle style={{textAlign: 'center'}}>Congrats</ModalTitle>
+        <p className='modal-text'>You guessed the teacher in <span style={{fontWeight:'bold'}}>{teacherCounter}</span> {teacherCounter===1 ? ("guess") : "guesses"}</p>
+        <p className='modal-text'>You used <span style={{fontWeight:'bold'}}>{roomCounter}</span> room number {roomCounter===1 ? ("guess") : "guesses"}</p>
+        <p className='modal-text'>You used <span style={{fontWeight:'bold'}}>{subjectCounter}</span> subject {subjectCounter===1 ? ("guess") : "guesses"}</p>
+      </ReactModal>
+
+    </div>
   )
 }
 
