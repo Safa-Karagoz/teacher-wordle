@@ -23,11 +23,13 @@ let doc = {
 }
 
 const Game = () => {
-  console.log(teacher);
+  //console.log(teacher);
 
   const [roomCounter, addRoomCounter] = useState(0)
   const [subjectCounter, addSubjectCounter] = useState(0)
   const [teacherCounter, addTeacherCounter] = useState(0)
+  const [greenCount, addGreenCounter] = useState(0)
+
 
   useEffect(() => {
     var box = document.getElementsByClassName("roomNumberInt")
@@ -35,7 +37,7 @@ const Game = () => {
       document.getElementById("dropdown-button").disabled = true;
       document.getElementById("subject-submit").disabled = true;
     }
-    if (roomCounter >= 5) {
+    if (roomCounter >= 5 || greenCount >= 3) {
       for (var i = 0; i < 3; i++) {
         box[i].disabled = true;
       }
@@ -52,7 +54,7 @@ const Game = () => {
       document.getElementById("teacherGuess").disabled = true;
       document.getElementById("teacher-submit").disabled = true;
     }
-  }, [subjectCounter, roomCounter, teacherCounter]);
+  }, [subjectCounter, roomCounter, teacherCounter, greenCount]);
 
 
   function changeInput(subject) {
@@ -61,9 +63,12 @@ const Game = () => {
 
 
   function submitGuess(guesstype, guess) {
-    scripts.saveToCookie(guesstype, doc)
-    if (guesstype === "subject") {
-      addSubjectCounter(subjectCounter+1); 
+    if (guess === ""){
+      alert("please give input")
+    }
+    else if (guesstype === "subject") {
+      scripts.saveToCookie(guesstype, doc)
+      addSubjectCounter(subjectCounter + 1);
       if (guess === "") {
 
       }
@@ -78,16 +83,23 @@ const Game = () => {
       }
     }
     else if (guesstype === "room") {
-      addRoomCounter(roomCounter+1)
+      scripts.saveToCookie(guesstype, doc)
+      addRoomCounter(roomCounter + 1)
       var guessDigits = guess.split("");
       var realDigits = teacher.roomNumber.toString().split("");
       var box = document.getElementsByClassName("roomNumberInt")
+      var green = 0;
       for (let i = 0; i < 3; i++) {
         if (guessDigits[i] === realDigits[i]) {
+          green++;
           box[i].style.background = "green";
-          box[i].disabled = true
+          box[i].disabled = true;
           realDigits[i] = "claimedGreen";
         }
+        if (green === 3) {
+          addGreenCounter(3);
+        }
+
       }
       for (let i = 0; i < 3; i++) {
         if ((box[i].style.background !== "green")) {
@@ -103,10 +115,12 @@ const Game = () => {
 
     }
     else if (guesstype === "teacher") {
-      addTeacherCounter(teacherCounter+1); 
+      scripts.saveToCookie(guesstype, doc)
+      addTeacherCounter(teacherCounter + 1);
       let name = teacher.name.toLowerCase().split(" ")
       if (guess.toLowerCase() === name[1]) {
         document.getElementById("teacherGuess").disabled = true;
+        document.getElementById("teacher-submit").disabled = true;
         document.getElementById("teacherGuess").style.background = "green";
 
       }
@@ -122,26 +136,42 @@ const Game = () => {
 
   return (
     <Container fluid>
+
       <Row>
+        <p>Who's the teacher? <span>{teacherCounter}/5</span></p>
         <Form.Group>
-          <Form.Control type="text" className="teacherGuess" id='teacherGuess' />
-          <Button id="teacher-submit" onClick={() => submitGuess("teacher", document.getElementById("teacherGuess").value)}>Guess!</Button>
+          <Row>
+            <Form.Control type="text" className="teacherGuess" id='teacherGuess' />
+            <Button id="teacher-submit" onClick={() => submitGuess("teacher", document.getElementById("teacherGuess").value)}>Guess!</Button>
+          </Row>
         </Form.Group>
+      </Row>
+  
+        <Col>
+            <p>What's their room number? <span>{roomCounter}/5</span></p>
+        </Col>
 
         <Col>
-          <Form id="numberInputs">
-            <Form.Group>
-              <Form.Control type="number" className="roomNumberInt" min="0" max="2" />
-            </Form.Group>
-            <Form.Group>
-              <Form.Control type="number" className="roomNumberInt" min="0" max="9" />
-            </Form.Group>
-            <Form.Group>
-              <Form.Control type="number" className="roomNumberInt" min="0" max="9" />
-            </Form.Group>
-            <Button id="roomNumber-submit" onClick={() => submitGuess("room", getRoomNumber())}>Submit</Button>
-          </Form>
+          <Row>
+            <Form id="numberInputs">
+              <Form.Group>
+                <Form.Control type="number" className="roomNumberInt" min="0" max="2" />
+              </Form.Group>
+              <Form.Group>
+                <Form.Control type="number" className="roomNumberInt" min="0" max="9" />
+              </Form.Group>
+              <Form.Group>
+                <Form.Control type="number" className="roomNumberInt" min="0" max="9" />
+              </Form.Group>
+              <Button id="roomNumber-submit" onClick={() => submitGuess("room", getRoomNumber())}>Submit</Button>
+            </Form>
+          </Row>
         </Col>
+
+        <Col>
+            <p>What subject do they teach? <span>{subjectCounter}/5</span></p>
+        </Col>
+
         <Col id="subjects-dropdown">
           <Form>
             <InputGroup className="mb-3">
@@ -162,12 +192,10 @@ const Game = () => {
               <Form.Control id="subject-box" disabled />
 
               <Button id="subject-submit" onClick={() => submitGuess("subject", document.getElementById("subject-box").value)}>Submit</Button>
-
             </InputGroup>
           </Form>
         </Col>
 
-      </Row>
     </Container>
   )
 }
